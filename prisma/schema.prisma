@@ -20,6 +20,9 @@ model Post {
   slug      String   @unique
   content   String
   published Boolean  @default(false)
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([title, content]) //Combination of title and content has to be unique
+  @@index(slug) //If you have a lot of reads, but not a lot of updates, it is useful to create an index
 }
