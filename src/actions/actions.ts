@@ -12,6 +12,26 @@ export async function createPost(formData: FormData) {
         .toLowerCase()
         .replace(/[^a-z0-9-]/g, ""),
       content: formData.get("content") as string,
+      author: {
+        connect: {
+          email: "john@gmail.com",
+        },
+      },
+    },
+  });
+  revalidatePath("/posts");
+}
+
+export async function updatePost(formData: FormData, id: string) {
+  await prisma.post.update({
+    where: { id },
+    data: {
+      title: formData.get("title") as string,
+      slug: (formData.get("title") as string)
+        .replace(/\s+/g, "-")
+        .toLowerCase()
+        .replace(/[^a-z0-9-]/g, ""),
+      content: formData.get("content") as string,
     },
   });
   revalidatePath("/posts");
