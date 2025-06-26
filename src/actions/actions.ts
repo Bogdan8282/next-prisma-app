@@ -17,6 +17,11 @@ export async function createPost(formData: FormData) {
           email: "john@gmail.com",
         },
       },
+      Category: {
+        connect: {
+          slug: "other",
+        },
+      }
     },
   });
   revalidatePath("/posts");

@@ -2,23 +2,31 @@ import prisma from "@/lib/db";
 import { notFound } from "next/navigation";
 
 type Props = {
-  params: Promise<{ slug: string }>;
+  params: {
+    category: string;
+    slug: string;
+  };
 };
 
 export default async function PostPage({ params }: Props) {
-  const { slug } = await params;
+  const { slug, category } = await params;
   const post = await prisma.post.findUnique({
     where: {
       slug,
     },
   });
-  if (!post) {
+  const postCategory = await prisma.category.findUnique ({
+    where: {
+      slug: category,
+    }
+  })
+  if (!post || !postCategory) {
     notFound();
   }
   return (
     <>
       <main>
-        <h1>{post.title}</h1>
+        <h2>{post.title}</h2>
         <p>{post.content}</p>
       </main>
     </>
