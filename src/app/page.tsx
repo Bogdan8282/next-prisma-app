@@ -3,7 +3,7 @@ import prisma from "@/lib/db";
 import Header from "@/components/Header";
 
 export default async function PostsPage() {
-  const [posts, postCount] = await Promise.all([
+  const [latestPosts, postCount] = await Promise.all([
     prisma.post.findMany({
       where: {
         // published: true,
@@ -27,6 +27,7 @@ export default async function PostsPage() {
     }),
     prisma.post.count(),
   ]);
+
   return (
     <>
       <Header />
@@ -34,7 +35,7 @@ export default async function PostsPage() {
         <div className="wrapper">
           <h2 className="">All Posts ({postCount})</h2>
           <ul>
-            {posts.map((post) => (
+            {latestPosts.map((post) => (
               <li key={post.slug}>
                   <Link href={`/${post.Category.slug}/${post.slug}`}>
                     {post.title}

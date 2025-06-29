@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default async function CategoryPage({ params }: Props) {
-  const { category } = params;
+  const { category } = await params;
 
   const categoryItem = await prisma.category.findUnique({
     where: {
